@@ -1,5 +1,5 @@
 use image::Rgb;
-use rand::{random, thread_rng, Rng};
+use rand::{thread_rng, Rng};
 use std::{
     fmt::Display,
     ops::{Add, Div, Mul, Sub},
@@ -36,21 +36,35 @@ impl Vec3 {
         }
     }
     pub fn random() -> Self {
-        Self::new(random(), random(), random())
+        let mut thread_rng = thread_rng();
+        Self::new(thread_rng.gen(), thread_rng.gen(), thread_rng.gen())
     }
-    pub fn random_in_range(min: &f64, max: &f64) -> Self {
+    pub fn random_in_range(min: f64, max: f64) -> Self {
+        let mut thread_rng = thread_rng();
         Self::new(
-            thread_rng().gen_range(*min..*max),
-            thread_rng().gen_range(*min..*max),
-            thread_rng().gen_range(*min..*max),
+            thread_rng.gen_range(min..max),
+            thread_rng.gen_range(min..max),
+            thread_rng.gen_range(min..max),
         )
     }
     pub fn random_in_unit_sphere() -> Self {
         loop {
-            let point = Vec3::random_in_range(&-1.0, &1.0);
+            let point = Self::random_in_range(-1.0, 1.0);
             if point.length_squared() < 1.0 {
                 return point;
             }
+        }
+    }
+    pub fn random_unit_vector() -> Self {
+        Self::random_in_unit_sphere().normalized()
+    }
+    pub fn random_in_hemisphere(normal: &Self) -> Self {
+        let in_unit_sphere = Self::random_in_unit_sphere();
+        if Self::dot(&in_unit_sphere, normal) > 0.0 {
+            // In the same hemisphere as the normal
+            in_unit_sphere
+        } else {
+            in_unit_sphere * -1.0
         }
     }
 }

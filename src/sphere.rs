@@ -5,6 +5,7 @@ use crate::vec3::Vec3;
 pub struct Sphere {
     pub center: Vec3,
     pub radius: f64,
+    pub material: 
 }
 
 impl Sphere {
@@ -14,7 +15,7 @@ impl Sphere {
 }
 
 impl Hittable for Sphere {
-    fn is_hit(&self, ray: &Ray, t_min: &f64, t_max: &f64) -> Option<HitRecord> {
+    fn is_hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<HitRecord> {
         let oc = ray.origin - self.center;
         let a = ray.direction.length_squared();
         let half_b = Vec3::dot(&oc, &ray.direction);
@@ -27,16 +28,20 @@ impl Hittable for Sphere {
 
         // find the nearest root that lies in the acceptable range
         let mut root = (-half_b - sqrt_discriminant) / a;
-        if root < *t_min || root > *t_max {
+        if root < t_min || root > t_max {
             root = (-half_b + sqrt_discriminant) / a;
-            if root < *t_min || root > *t_max {
+            if root < t_min || root > t_max {
                 return None;
             }
         }
 
-        let mut hit_record = HitRecord::default();
-        hit_record.t = root;
-        hit_record.point = ray.at(hit_record.t);
+        let mut hit_record = HitRecord {
+            t: root,
+            point: ray.at(root),
+            normal: Vec3::default(),
+            front_face: false,
+
+        };
         let outward_normal = (hit_record.point - self.center) / self.radius;
         hit_record.set_face_normal(&ray, &outward_normal);
 

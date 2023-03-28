@@ -1,4 +1,5 @@
 use image::Rgb;
+use rand::{random, thread_rng, Rng};
 use std::{
     fmt::Display,
     ops::{Add, Div, Mul, Sub},
@@ -32,6 +33,24 @@ impl Vec3 {
             x: v.z * u.y - v.y * u.z,
             y: v.x * u.z - v.z * u.x,
             z: v.y * u.x - v.x * u.y,
+        }
+    }
+    pub fn random() -> Self {
+        Self::new(random(), random(), random())
+    }
+    pub fn random_in_range(min: &f64, max: &f64) -> Self {
+        Self::new(
+            thread_rng().gen_range(*min..*max),
+            thread_rng().gen_range(*min..*max),
+            thread_rng().gen_range(*min..*max),
+        )
+    }
+    pub fn random_in_unit_sphere() -> Self {
+        loop {
+            let point = Vec3::random_in_range(&-1.0, &1.0);
+            if point.length_squared() < 1.0 {
+                return point;
+            }
         }
     }
 }

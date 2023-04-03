@@ -5,7 +5,6 @@ use crate::vec3::Vec3;
 pub struct Sphere {
     pub center: Vec3,
     pub radius: f64,
-    pub material: 
 }
 
 impl Sphere {
@@ -40,7 +39,6 @@ impl Hittable for Sphere {
             point: ray.at(root),
             normal: Vec3::default(),
             front_face: false,
-
         };
         let outward_normal = (hit_record.point - self.center) / self.radius;
         hit_record.set_face_normal(&ray, &outward_normal);

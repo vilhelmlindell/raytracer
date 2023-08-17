@@ -27,10 +27,13 @@ impl Camera {
             vertical,
         }
     }
-    pub fn get_ray(&self, u: &f64, v: &f64) -> Ray {
+    pub fn get_viewport_ray(&self, horizontal_delta: f64, vertical_delta: f64) -> Ray {
         Ray::new(
             self.origin,
-            self.lower_left_corner + *u * self.horizontal + *v * self.vertical - self.origin,
+            self.lower_left_corner
+                + horizontal_delta * self.horizontal
+                + vertical_delta * self.vertical
+                - self.origin,
         )
     }
 }

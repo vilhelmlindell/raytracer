@@ -15,3 +15,11 @@ impl Ray {
     }
 }
 
+impl Default for Ray {
+    fn default() -> Self {
+        Self {
+            origin: Vec3::default(),
+            direction: Vec3::default(),
+        }
+    }
+}

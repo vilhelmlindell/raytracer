@@ -24,14 +24,3 @@ impl HitRecord<'_> {
         }
     }
 }
-
-impl Default for HitRecord<'_> {
-    fn default() -> Self {
-        Self {
-            point: Vec3::default(),
-            normal: Vec3::default(),
-            t: 0.0,
-            front_face: false,
-        }
-    }
-}

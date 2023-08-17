@@ -67,6 +67,13 @@ impl Vec3 {
             in_unit_sphere * -1.0
         }
     }
+    pub fn is_near_zero(&self) -> bool {
+        let precision = 1e-8;
+        (self.x < precision) && (self.y < precision) && (self.z < precision)
+    }
+    pub fn reflect(&self, normal: &Self) -> Self {
+        *self - 2.0 * Vec3::dot(self, normal) * *self
+    }
 }
 
 impl Default for Vec3 {

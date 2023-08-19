@@ -72,7 +72,7 @@ impl Vec3 {
         (self.x < precision) && (self.y < precision) && (self.z < precision)
     }
     pub fn reflect(&self, normal: &Self) -> Self {
-        *self - 2.0 * Vec3::dot(self, normal) * *self
+        *self - 2.0 * Vec3::dot(self, normal) * *normal
     }
 }
 
@@ -89,9 +89,9 @@ impl Default for Vec3 {
 impl From<Vec3> for Rgb<u8> {
     fn from(value: Vec3) -> Self {
         Self([
-            (value.x * 256.0) as u8,
-            (value.y * 256.0) as u8,
-            (value.z * 256.0) as u8,
+            (value.x * 255.0) as u8,
+            (value.y * 255.0) as u8,
+            (value.z * 255.0) as u8,
         ])
     }
 }
